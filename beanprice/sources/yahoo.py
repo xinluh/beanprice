@@ -37,7 +37,7 @@ def parse_response(response: requests.models.Response) -> Dict:
     """
     json = response.json(parse_float=Decimal)
     content = next(iter(json.values()))
-    if response.status_code != requests.codes.ok:
+    if response.status_code != 200:
         raise YahooError("Status {}: {}".format(response.status_code, content['error']))
     if len(json) != 1:
         raise YahooError("Invalid format in response from Yahoo; many keys: {}".format(
