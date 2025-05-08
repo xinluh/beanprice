@@ -22,7 +22,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import requests
+from curl_cffi import requests
 
 from beanprice import source
 
@@ -123,13 +123,13 @@ class Source(source.Source):
     def get_latest_price(self, ticker: str) -> Optional[source.SourcePrice]:
         """See contract in beanprice.source.Source."""
 
-        session = requests.Session()
-        session.headers.update(
-            {
-                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) "
-                "Gecko/20100101 Firefox/110.0"
-            }
-        )
+        session = requests.Session(impersonate='chrome')
+        #session.headers.update(
+        #    {
+        #        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) "
+        #        "Gecko/20100101 Firefox/110.0"
+        #    }
+        #)
         # This populates the correct cookies in the session
         session.get("https://fc.yahoo.com")
         crumb = session.get("https://query1.finance.yahoo.com/v1/test/getcrumb").text
